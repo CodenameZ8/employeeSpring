@@ -1,0 +1,95 @@
+Install MongoDB locally with default ip:127.0.0.1/localhost,port:27017,Database:test
+
+
+1)Create Schedule api which will accept employee id(emailAddress) and training period (it should support single Date , time and schedule Duration and multiple as well)
+Adding new data:
+With Json Employee Data with array of schedule
+POST
+http://localhost:8080/employee
+
+{
+"emailId":"xyz@emp.com",
+"schedule":
+[{
+"startDate":"01-Apr-2021",
+"endDate":"10-Apr-2021",
+"time":"10:45",
+"duration":60,
+"repeat":true,
+"frequency":"Weekdays"
+},
+{
+"startDate":"07-Apr-2021",
+"endDate":"18-Apr-2021",
+"time":"10:05",
+"duration":20,
+"repeat":true,
+"frequency":"Daily"
+}
+]
+}
+
+2)List Schedule by Employeeid
+Using Employee
+GET
+http://localhost:8080/employee/60c385c620d4625bf818f969
+http://localhost:8080/employee/(Employee)
+
+
+3)Modify schedule by Employeeid
+Editing Schedule with both employee ID and Schedule ID with Json data of Schedule.
+PUT
+http://localhost:8080/employee/60c3861020d4625bf818f96a/schedule/5915ccfa-5c53-47d5-96b6-749918a1289f
+http://localhost:8080/employee/(employeeID)/schedule/(ScheduleID)
+{
+"startDate":"10-Apr-2021",
+"endDate":"13-Apr-2021",
+"time":"",
+"duration":30,
+"repeat":false,
+"frequency":"Daily"
+}
+
+4)Cancel Schedule by Employeeid
+
+Delete Schedule with EmployeeID and ScheduleID
+DELETE
+http://localhost:8080/employee/60c3861020d4625bf818f96a/schedule/5915ccfa-5c53-47d5-96b6-749918a1289f
+http://localhost:8080/employee/(employeeID)/schedule/(ScheduleID)
+
+
+5)Get schedule by date, should have actual schedule for that date,  say if I have one training for daily repeat for 30 mins, that date training should be alone listed
+Searching Specific date: only displaying appointments on that date.
+
+GET
+http://localhost:8080/employee/schedule/?date=11-Apr-2021
+
+Returns
+[
+{
+"schedule": [
+{
+"time": "10:45",
+"duration": 60,
+"startDate": "01-Apr-2021",
+"endDate": "10-Apr-2021"
+},
+{
+"time": "10:05",
+"duration": 20,
+"startDate": "07-Apr-2021",
+"endDate": "18-Apr-2021"
+}
+]
+},
+{
+"schedule": [
+{
+"time": "",
+"duration": 30,
+"startDate": "10-Apr-2021",
+"endDate": "13-Apr-2021"
+}
+]
+}
+]
